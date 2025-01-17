@@ -1,0 +1,9 @@
+[submodule "submodules/tdlib"]
+	path = submodules/tdlib
+	url = https://github.com/tdlib/td
+[submodule "submodules/zlib"]
+	path = submodules/zlib
+	url = https://github.com/madler/zlib
+[submodule "submodules/libressl"]
+	path = submodules/libressl
+	url = https://github.com/libressl/portable
