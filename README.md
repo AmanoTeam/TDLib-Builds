@@ -1,6 +1,6 @@
-# tdlib
+# TDLib
 
-Precompiled portable tdlib binaries for Linux 
+Precompiled portable TDLib binaries for Linux 
 
 ## Features
 
