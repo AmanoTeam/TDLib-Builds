@@ -8,6 +8,8 @@ project(
 	LANGUAGES C CXX
 )
 
+option(TDLIB_ENABLE_LTO "Turn on compiler Link Time Optimizations" OFF)
+
 set(BUILD_SHARED_LIBS ON)
 
 set(TDLIB_SOURCE_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/submodules/tdlib")
@@ -27,7 +29,6 @@ set(
 	"zlib"
 	"crypto"
 	"ssl"
-	# "tls"
 )
 
 set(
@@ -114,6 +115,23 @@ endif()
 add_subdirectory(submodules/zlib EXCLUDE_FROM_ALL)
 add_subdirectory(submodules/libressl EXCLUDE_FROM_ALL)
 add_subdirectory(submodules/tdlib EXCLUDE_FROM_ALL)
+
+if (TDLIB_ENABLE_LTO)
+	set(TDLIB_HAS_LTO OFF)
+	
+	include(CheckIPOSupported)
+	check_ipo_supported(RESULT TDLIB_HAS_LTO LANGUAGES C)
+	
+	if (TDLIB_HAS_LTO)
+		foreach(target ${ALL_TARGETS})
+			set_target_properties(
+				${target}
+				PROPERTIES
+				INTERPROCEDURAL_OPTIMIZATION TRUE
+			)
+		endforeach()
+	endif()
+endif()
 
 file(REMOVE "${OPENSSL_SSL_LIBRARY}")
 file(REMOVE "${OPENSSL_CRYPTO_LIBRARY}")

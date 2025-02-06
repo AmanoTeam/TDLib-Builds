@@ -78,7 +78,7 @@ jobs:
                 cmake \
                     -B "${build_directory}" \
                     -S "${source_directory}" \
-                    -DCMAKE_INTERPROCEDURAL_OPTIMIZATION='OFF' \
+                    -DTDLIB_ENABLE_LTO='ON' \
                     -DCMAKE_C_FLAGS="-w" \
                     -DCMAKE_TOOLCHAIN_FILE="${source_directory}/.github/workflows/cmake_toolchains/${target}.cmake" \
                     -DCMAKE_INSTALL_PREFIX="${install_prefix}" \
