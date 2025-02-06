@@ -40,9 +40,9 @@ jobs:
         cmake --build "${build_directory}" --target 'prepare_cross_compiling' -- --jobs
         cmake --build "${build_directory}" --target 'tl_generate_c' -- --jobs
         
-        pushd "${source_directory}/submodules/tdlib"
-        php SplitSource.php
-        pushd
+        # pushd "${source_directory}/submodules/tdlib"
+        # php SplitSource.php
+        # pushd
     - name: Setup OBGGCC cross-compiler
       run: |
         declare -r OBGGCC_TAG="$(jq --raw-output '.tag_name' <<< "$(curl --connect-timeout '10' --retry '15' --retry-all-errors --fail --silent --url 'https://api.github.com/repos/AmanoTeam/obggcc/releases/latest')")"
