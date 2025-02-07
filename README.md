@@ -1,11 +1,12 @@
 # TDLib
 
-Precompiled portable TDLib binaries for Linux 
+Precompiled portable TDLib binaries for Linux.
 
 ## Features
 
 * Both `libgcc` and `libstdc++` are statically linked.
 * Target older OS releases (increases compatibility).
+* Built with LTO (Link-Time Optimization).
 
 ## Downloads
 
