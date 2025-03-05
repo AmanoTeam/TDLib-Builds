@@ -32,6 +32,7 @@ jobs:
         declare source_directory="${PWD}"
         declare build_directory='/tmp/tdlib-build'
         
+        sudo apt-get update
         sudo apt-get install 'gperf'
         
         cmake \
@@ -39,10 +40,6 @@ jobs:
             -S "${source_directory}/submodules/tdlib"
         cmake --build "${build_directory}" --target 'prepare_cross_compiling' -- --jobs
         cmake --build "${build_directory}" --target 'tl_generate_c' -- --jobs
-        
-        # pushd "${source_directory}/submodules/tdlib"
-        # php SplitSource.php
-        # pushd
     - name: Setup OBGGCC cross-compiler
       run: |
         declare -r OBGGCC_TAG="$(jq --raw-output '.tag_name' <<< "$(curl --connect-timeout '10' --retry '15' --retry-all-errors --fail --silent --url 'https://api.github.com/repos/AmanoTeam/obggcc/releases/latest')")"
@@ -79,10 +76,13 @@ jobs:
                     -B "${build_directory}" \
                     -S "${source_directory}" \
                     -DTDLIB_ENABLE_LTO='ON' \
-                    -DCMAKE_C_FLAGS="-w" \
-                    -DCMAKE_TOOLCHAIN_FILE="${source_directory}/.github/workflows/cmake_toolchains/${target}.cmake" \
+                    -DCMAKE_C_FLAGS='-w' \
+                    -DCMAKE_CXX_FLAGS='-w' \
+                    -DCMAKE_TOOLCHAIN_FILE="${OBGGCC_HOME}/usr/local/share/obggcc/cmake/${target}.cmake" \
                     -DCMAKE_INSTALL_PREFIX="${install_prefix}" \
                     -DCMAKE_BUILD_TYPE='Release' 1>/dev/null
+                
+                target="${target%2.*}"
                 
                 echo "- Building dependencies"
                 
@@ -93,8 +93,8 @@ jobs:
                 
                 echo "- Building main project"
                 
-                cmake --build "${build_directory}"  --target 'tdc' -- --jobs=16 #1>/dev/null
-                cmake --build "${build_directory}"  --target 'tdclient' -- --jobs=16 #1>/dev/null
+                cmake --build "${build_directory}"  --target 'tdc' -- --jobs=16 1>/dev/null
+                cmake --build "${build_directory}"  --target 'tdclient' -- --jobs=16 1>/dev/null
                 cmake --build "${build_directory}"  --target 'tdjson' -- --jobs=16 1>/dev/null
                 
                 echo "- Installing project"
