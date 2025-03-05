@@ -67,6 +67,10 @@ jobs:
         
         for target in "${targets[@]}"; do
             (
+                declare toolchain_file="${OBGGCC_HOME}/usr/local/share/obggcc/cmake/${target}.cmake"
+                
+                target="${target%2.*}"
+                
                 declare build_directory="${target}-build"
                 declare install_prefix="${build_directory}/${target}"
                 
@@ -76,13 +80,11 @@ jobs:
                     -B "${build_directory}" \
                     -S "${source_directory}" \
                     -DTDLIB_ENABLE_LTO='ON' \
-                    -DCMAKE_C_FLAGS='-w' \
-                    -DCMAKE_CXX_FLAGS='-w' \
-                    -DCMAKE_TOOLCHAIN_FILE="${OBGGCC_HOME}/usr/local/share/obggcc/cmake/${target}.cmake" \
+                    -DCMAKE_C_FLAGS='-w -Ofast' \
+                    -DCMAKE_CXX_FLAGS='-w -Ofast' \
+                    -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}" \
                     -DCMAKE_INSTALL_PREFIX="${install_prefix}" \
                     -DCMAKE_BUILD_TYPE='Release' 1>/dev/null
-                
-                target="${target%2.*}"
                 
                 echo "- Building dependencies"
                 
