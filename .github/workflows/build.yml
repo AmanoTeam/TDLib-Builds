@@ -92,7 +92,7 @@ jobs:
                 
                 target="${target%2.*}"
                 
-                declare build_directory="${target}-build"
+                declare build_directory="/tmp/${target}-build"
                 declare install_prefix="${build_directory}/${target}"
                 
                 echo "- Building for ${target}"
@@ -137,6 +137,24 @@ jobs:
                 rm --force --recursive "${build_directory}"
             )
         done
+    - name: Create logs
+      if: always()
+      run: |
+        declare logs=''
+        
+        while read file; do
+            logs+="${file} "
+        done <<< $(find "/tmp/"*'-build' -wholename '*.log' -o -wholename '*.yaml')
+        
+        tar --create --file=- ${logs} | xz --threads='0' --compress -9 > '/tmp/logs.tar.xz'
+    - name: Upload logs
+      if:  always()
+      uses: actions/upload-artifact@main
+      with:
+        name: ${{ matrix.target }}-logs
+        if-no-files-found: error
+        path: |
+            /tmp/logs.tar.xz
     - name: Upload artifact
       uses: actions/upload-artifact@main
       with:
