@@ -63,6 +63,19 @@ jobs:
         echo 'PINO_HOME=/tmp/pino' >> "${GITHUB_ENV}"
         echo '/tmp/pino/bin' >> "${GITHUB_PATH}"
         
+        git clone https://github.com/AmanoTeam/obggcc
+        cc obggcc/tools/gcc-wrapper/*.c ~/gcc-wrapper/fs/*.c -I ~/gcc-wrapper -o p -DPINO # ~/pino/bin/aarch64-unknown-linux-android21-gcc -o p -DPINO
+        cp p /tmp/pino/bin/aarch64-unknown-linux-android21-gcc
+        cp p /tmp/pino/bin/aarch64-unknown-linux-android21-g++
+        
+        cp p /tmp/pino/bin/x86_64-unknown-linux-android21-gcc
+        cp p /tmp/pino/bin/x86_64-unknown-linux-android21-g++
+        
+        cp p /tmp/pino/bin/i686-unknown-linux-android21-gcc
+        cp p /tmp/pino/bin/i686-unknown-linux-android21-g++
+        
+        cp p /tmp/pino/bin/arm-unknown-linux-androideabi21-gcc
+        cp p /tmp/pino/bin/arm-unknown-linux-androideabi21-g++
         echo 'set(ANDROID 1)' > "/tmp/pino/usr/local/share/pino/cmake/android-support.cmake"
     - name: Setup symlinks
       run: |
