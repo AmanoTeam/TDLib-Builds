@@ -62,6 +62,8 @@ jobs:
         
         echo 'PINO_HOME=/tmp/pino' >> "${GITHUB_ENV}"
         echo '/tmp/pino/bin' >> "${GITHUB_PATH}"
+        
+        echo 'set(ANDROID TRUE CACHE BOOLEAN "Android")' > "${PINO_HOME}/usr/local/share/pino/cmake/android-support.cmake"
     - name: Setup symlinks
       run: |
         ln --symbolic "${OBGGCC_HOME}/usr/local/share/obggcc/"*'/'* '/tmp'
