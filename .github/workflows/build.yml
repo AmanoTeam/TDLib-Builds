@@ -114,8 +114,8 @@ jobs:
                     -B "${build_directory}" \
                     -S "${source_directory}" \
                     -DTDLIB_ENABLE_LTO='ON' \
-                    -DCMAKE_C_FLAGS='-w -Ofast -latomic' \
-                    -DCMAKE_CXX_FLAGS='-w -Ofast -latomic' \
+                    -DCMAKE_C_FLAGS='-w -Ofast' \
+                    -DCMAKE_CXX_FLAGS='-w -Ofast' \
                     -DCMAKE_TOOLCHAIN_FILE="${toolchain_file}" \
                     -DCMAKE_INSTALL_PREFIX="${install_prefix}" \
                     -DCMAKE_BUILD_TYPE='Release' 1>/dev/null
