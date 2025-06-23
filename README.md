@@ -11,4 +11,3 @@ Precompiled portable TDLib binaries for Linux.
 ## Downloads
 
 You can obtain releases from the [releases](https://github.com/AmanoTeam/TDLib-Builds/releases) page.
-
