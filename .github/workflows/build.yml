@@ -62,6 +62,10 @@ jobs:
         
         echo 'PINO_HOME=/tmp/pino' >> "${GITHUB_ENV}"
         echo '/tmp/pino/bin' >> "${GITHUB_PATH}"
+    - name: Setup symlinks
+      run: |
+        ln --symbolic "${OBGGCC_HOME}/usr/local/share/obggcc/"*'/'* '/tmp'
+        ln --symbolic "${PINO_HOME}/usr/local/share/pino/"*'/'* '/tmp'
     - name: Build with CMake
       run: |
         declare -ra targets=(
@@ -74,7 +78,7 @@ jobs:
             aarch64-unknown-linux-gnu2.19
             i386-unknown-linux-gnu2.17
         )
-        
+
         declare -r source_directory="${PWD}"
         
         declare -r output_directory="$(realpath './output')"
@@ -82,7 +86,7 @@ jobs:
         
         for target in "${targets[@]}"; do
             (
-                declare toolchain_file="${OBGGCC_HOME}/usr/local/share/obggcc/cmake/${target}.cmake"
+                declare toolchain_file="/tmp/${target}.cmake"
                 
                 target="${target%2.*}"
                 
